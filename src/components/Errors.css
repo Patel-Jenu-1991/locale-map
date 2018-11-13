@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro|Ubuntu+Mono');
+
+.error-heading {
+  color: rgba(191, 57, 21, 0.96);
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 4em;
+}
+
+.error-msg {
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.spinner {
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 4em;
+}

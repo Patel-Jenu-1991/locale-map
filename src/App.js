@@ -75,7 +75,7 @@ class App extends Component {
       <div className='App'>
         <div>
           <button onClick={this.toggleDrawer} style={this.styles.menuButton}>
-            <i className='fa fa-bars'></i>
+            <i className='fas fa-bars'></i>
           </button>
           <h1>Mexican Restaurants of Channelview, TX Locality</h1>
         </div>
