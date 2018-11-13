@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import restaurants from './data/locations.json';
+import MapDisplay from './components/MapDisplay';
 
 class App extends Component {
+  state = {
+    lat: 29.790787,
+    lng: -95.1799942,
+    zoom: 14,
+    locations: restaurants
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className='App'>
+        <div>
+          <h1>Mexican Restaurants of Channelview, TX Locality</h1>
+        </div>
+        <MapDisplay
+          lat={this.state.lat}
+          lng={this.state.lng}
+          zoom={this.state.zoom}
+          locations={this.state.locations}/>
       </div>
     );
   }
