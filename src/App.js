@@ -5,8 +5,8 @@ import MapDisplay from './components/MapDisplay';
 
 class App extends Component {
   state = {
-    lat: 29.790787,
-    lng: -95.1799942,
+    lat: 29.7811983,
+    lng: -95.1455308,
     zoom: 14,
     locations: restaurants
   };
