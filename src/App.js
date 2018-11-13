@@ -10,6 +10,7 @@ class App extends Component {
     lng: -95.1455308,
     zoom: 14,
     locations: restaurants,
+    filtered: null,
     open: false
   };
 
@@ -31,11 +32,34 @@ class App extends Component {
     }
   };
 
+  componentDidMount() {
+    this.setState({
+      ...this.state,
+      filtered: this.filterLocations(this.state.locations, "")
+    });
+  }
+
   toggleDrawer = () => {
     // toggle value for displaying drawer
     this.setState({
       open: !this.state.open
     });
+  };
+
+  updateQuery = (query) => {
+    // Update query value and filter locations accordingly
+    this.setState({
+      ...this.state,
+      selectedIndex: null,
+      filtered: this.filterLocations(this.state.locations, query)
+    });
+  };
+
+  filterLocations = (locations, query) => {
+    // filter locations to match query string
+    return locations.filter(
+      location => location.name.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   render() {
@@ -51,11 +75,12 @@ class App extends Component {
           lat={this.state.lat}
           lng={this.state.lng}
           zoom={this.state.zoom}
-          locations={this.state.locations}/>
+          locations={this.state.filtered}/>
         <ListDrawer
-          locations={this.state.locations}
+          locations={this.state.filtered}
           open={this.state.open}
-          toggleDrawer={this.toggleDrawer}/>
+          toggleDrawer={this.toggleDrawer}
+          filterLocations={this.updateQuery}/>
       </div>
     );
   }

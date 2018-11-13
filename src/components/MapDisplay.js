@@ -19,6 +19,30 @@ class MapDisplay extends Component {
     showingInfoWindow: false
   };
 
+  componentWillReceiveProps = (props) => {
+    this.setState({firstDrop: false});
+
+    // Change in the number of locations, update markers
+    if (this.state.markers.length !== props.locations.length) {
+      this.closeInfoWindow();
+      this.updateMarkers(props.locations);
+      this.setState({activeMarker: null});
+
+      return;
+    }
+
+    // Close info window when selected item is not the same as the active marker
+    if (!props.selectedIndex || (this.state.activeMarker &&
+        (this.state.markers[props.selectedIndex] !== this.state.activeMarker))) {
+        this.closeInfoWindow();
+    }
+
+    // Ensure there's a selected index
+    if (props.selectedIndex === null || typeof(props.selectedIndex) === undefined) {
+      return;
+    }
+  };
+
   mapReady = (props, map) => {
     // Save map reference to state, prepare location markers
     this.setState({map});
@@ -124,7 +148,7 @@ class MapDisplay extends Component {
       };
       markerProps.push(mProps);
 
-      let animation = this.props.google.maps.Animation.DROP;
+      let animation = this.state.firstDrop ? this.props.google.maps.Animation.DROP : null;
       let marker = new this.props.google.maps.Marker({
         position: location.pos,
         map: this.state.map,
