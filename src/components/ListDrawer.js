@@ -23,12 +23,21 @@ class ListDrawer extends Component {
       marginBottom: '15px'
     },
     listLink: {
-      background: 'transparent',
-      border: 'none',
-      color: 'black'
+      background: 'rgba(45, 0, 226, 0.62)',
+      border: '2px ridge rgba(34, 120, 94, 0.75)',
+      borderRadius: '15px',
+      color: 'rgba(255, 246, 34, 0.94)',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      padding: '8px',
+      letterSpacing: '1px',
+      textShadow: '2px 3px 4px rgba(170, 168, 168, 0.89)'
     },
     filterEntry: {
       border: '1px solid gray',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      letterSpacing: '2px',
       padding: '3px',
       margin: '30px 0 10px',
       width: '100%'
@@ -61,7 +70,7 @@ class ListDrawer extends Component {
                     return (
                       <li style={this.styles.listItem} key={index}>
                         <button
-                          style={this.styles.listIndex}
+                          style={this.styles.listLink}
                           key={index}
                           onClick={e => this.props.clickListItem(index)}>
                           {location.name}

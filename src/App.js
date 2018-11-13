@@ -77,7 +77,9 @@ class App extends Component {
           <button onClick={this.toggleDrawer} style={this.styles.menuButton}>
             <i className='fas fa-bars'></i>
           </button>
-          <h1>Mexican Restaurants of Channelview, TX Locality</h1>
+          <h1 className='app-heading'>
+            Mexican Restaurants of Channelview, TX
+          </h1>
         </div>
         <MapDisplay
           lat={this.state.lat}
