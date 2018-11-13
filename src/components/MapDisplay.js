@@ -38,9 +38,12 @@ class MapDisplay extends Component {
     }
 
     // Ensure there's a selected index
-    if (props.selectedIndex === null || typeof(props.selectedIndex) === undefined) {
+    if (props.selectedIndex === null || typeof(props.selectedIndex) === 'undefined') {
       return;
     }
+
+    // Treat marker to have been clicked
+    this.onMarkerClick(this.state.markerProps[props.selectedIndex], this.state.markers[props.selectedIndex]);
   };
 
   mapReady = (props, map) => {
@@ -67,7 +70,7 @@ class MapDisplay extends Component {
     );
   };
 
-  onMarkerClick = (props, marker, e) => {
+  onMarkerClick = (props, marker, event) => {
     // Close any info window display open
     this.closeInfoWindow();
 

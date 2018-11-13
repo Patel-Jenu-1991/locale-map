@@ -62,6 +62,14 @@ class App extends Component {
     );
   };
 
+  clickListItem = (index) => {
+    // Set state to reflect selected location array index
+    this.setState({
+      selectedIndex: index,
+      open: !this.state.open
+    });
+  };
+
   render() {
     return (
       <div className='App'>
@@ -75,12 +83,15 @@ class App extends Component {
           lat={this.state.lat}
           lng={this.state.lng}
           zoom={this.state.zoom}
-          locations={this.state.filtered}/>
+          locations={this.state.filtered}
+          selectedIndex={this.state.selectedIndex}
+          clickListItem={this.clickListItem}/>
         <ListDrawer
           locations={this.state.filtered}
           open={this.state.open}
           toggleDrawer={this.toggleDrawer}
-          filterLocations={this.updateQuery}/>
+          filterLocations={this.updateQuery}
+          clickListItem={this.clickListItem}/>
       </div>
     );
   }

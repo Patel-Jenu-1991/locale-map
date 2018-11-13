@@ -60,7 +60,10 @@ class ListDrawer extends Component {
                   (location, index) => {
                     return (
                       <li style={this.styles.listItem} key={index}>
-                        <button style={this.styles.listIndex} key={index}>
+                        <button
+                          style={this.styles.listIndex}
+                          key={index}
+                          onClick={e => this.props.clickListItem(index)}>
                           {location.name}
                         </button>
                       </li>
