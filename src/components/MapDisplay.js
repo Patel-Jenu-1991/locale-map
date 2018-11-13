@@ -2,7 +2,12 @@ import React, {Component} from 'react';
 import './InfoWindow.css';
 import {Map, InfoWindow, GoogleApiWrapper} from 'google-maps-react';
 
-const MAP_KEY = "AIzaSyA7-vNYPVyMmFizrfjY6NVbW42p1xFC7yw";
+const {MAP_KEY, FS_CLIENT, FS_SECRET, FS_VERSION} = {
+  MAP_KEY: 'AIzaSyA7-vNYPVyMmFizrfjY6NVbW42p1xFC7yw',
+  FS_CLIENT: 'II3TX0WUQHPM43CBACLPC1RP21EPYRMBWBHY4G1FYGGPLVKD',
+  FS_SECRET: 'P0G30WCHPN5PJ2H43BYCGYNQVEHKYGGMQGDNLNJYMG2A400O',
+  FS_VERSION: '20180323'
+};
 
 class MapDisplay extends Component {
   state = {
@@ -30,15 +35,69 @@ class MapDisplay extends Component {
     });
   };
 
+  getBusinessInfo = (props, data) => {
+    // Look for matching restaurant data using FourSquare API
+    // besides what is already available
+    return data.response.venues.filter(
+      item => item.name.includes(props.name) || props.name.includes(item.name)
+    );
+  };
+
   onMarkerClick = (props, marker, e) => {
     // Close any info window display open
     this.closeInfoWindow();
-    // Set state to show marker info
-    this.setState({
-      showingInfoWindow: true,
-      activeMarker: marker,
-      activeMarkerProps: props
+
+    // Fetch the FourSquare data for the selected restaurant
+    let url = `https://api.foursquare.com/v2/venues/search?client_id=${FS_CLIENT}&client_secret=${FS_SECRET}&v=${FS_VERSION}&radius=100&ll=${props.position.lat},${props.position.lng}&llAcc=100`;
+    let headers = new Headers();
+    let request = new Request(url, {
+      method: 'GET',
+      headers
     });
+
+    // Create props for an active marker
+    let activeMarkerProps;
+    fetch(request)
+      .then(response => response.json())
+      .then(result => {
+        // Get business reference for the chosen restaurant using FourSquare API
+        let restaurant = this.getBusinessInfo(props, result);
+        activeMarkerProps = {
+          ...props,
+          foursquare: restaurant[0]
+        };
+
+        // Get image listing for the restaurant if the FourSquare data is available
+        // or finish setting up state with existing data
+        if (activeMarkerProps.foursquare) {
+          let url = `https://api.foursquare.com/v2/venues/${restaurant[0].id}/photos?client_id=${FS_CLIENT}&client_secret=${FS_SECRET}&v=${FS_VERSION}`;
+          fetch(url)
+            .then(response => response.json())
+            .then(result => {
+              activeMarkerProps = {
+                ...activeMarkerProps,
+                images: result.response.photos
+              };
+              if (this.state.activeMarker) {
+                this.state.activeMarker.setAnimation(null);
+              }
+              marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
+              // Set state to show marker info
+              this.setState({
+                showingInfoWindow: true,
+                activeMarker: marker,
+                activeMarkerProps
+              });
+            });
+        } else {
+          marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
+          this.setState({
+            showingInfoWindow: true,
+            activeMarker: marker,
+            activeMarkerProps
+          });
+        }
+      });
   };
 
   updateMarkers = (locations) => {
@@ -109,20 +168,38 @@ class MapDisplay extends Component {
           visible={this.state.showingInfoWindow}
           onClose={this.closeInfoWindow}>
           <div>
-            <h3 className='remove-spacing title'>{amProps && amProps.name}</h3>
-            <h4 className='remove-spacing rating'>Rating: {amProps && String(amProps.rating.toFixed(1))}</h4>
+            <h3 className='remove-spacing title'>
+              {amProps && amProps.name}
+            </h3>
+            <h4 className='remove-spacing rating'>
+              Rating: {amProps && String(amProps.rating.toFixed(1))}
+            </h4>
             {
-              amProps && amProps.url ?
-              (
-                amProps.url !== 'Not Available' ?
-                (
-                  <a className='link-style' href={amProps.url}>See website</a>
+              amProps && amProps.images
+                ? (
+                  <div>
+                    <img
+                      className='resto-photo'
+                      alt={amProps.name + ' food picture'}
+                      src={amProps.images.items[0].prefix + '100x100' + amProps.images.items[0].suffix}/>
+                    <p>Image from FourSquare</p>
+                  </div>
                 )
                 :
-                <span className='link-style'>Website N/A</span>
-              )
-              :
-              ""
+                ""
+            }
+            {
+              amProps && amProps.url
+                ? (
+                  amProps.url !== 'Not Available' ?
+                  (
+                    <a className='link-style' href={amProps.url}>See website</a>
+                  )
+                  :
+                  <span className='link-style'>Website N/A</span>
+                )
+                :
+                ""
             }
           </div>
         </InfoWindow>

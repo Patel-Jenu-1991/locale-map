@@ -1,15 +1,5 @@
 [
   {
-    "name": "El Chinampa Mexican Restaurant",
-    "street": "17009 East Fwy",
-    "city": "Channelview",
-    "state": "TX",
-    "zip": "77530",
-    "url": "http://www.elchinampamexicanrestaurant.com/",
-    "rating": 4.4,
-    "pos": {"lat": 29.7895361,"lng": -95.0976512}
-  },
-  {
     "name": "Armenta's Mexican Restaurant",
     "street": "823 Sheldon Rd",
     "city": "Channelview",
