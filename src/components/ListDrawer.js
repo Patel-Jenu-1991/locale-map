@@ -23,15 +23,14 @@ class ListDrawer extends Component {
       marginBottom: '15px'
     },
     listLink: {
-      background: 'rgba(45, 0, 226, 0.62)',
+      background: 'rgba(6, 5, 9, 0.76)',
       border: '2px ridge rgba(34, 120, 94, 0.75)',
       borderRadius: '15px',
-      color: 'rgba(255, 246, 34, 0.94)',
+      color: 'rgba(246, 244, 244, 1)',
       fontSize: '16px',
       fontWeight: 'bold',
       padding: '8px',
-      letterSpacing: '1px',
-      textShadow: '2px 3px 4px rgba(170, 168, 168, 0.89)'
+      letterSpacing: '1px'
     },
     filterEntry: {
       border: '1px solid gray',

@@ -73,7 +73,7 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <div>
+        <div className='heading-container'>
           <button onClick={this.toggleDrawer} style={this.styles.menuButton}>
             <i className='fas fa-bars'></i>
           </button>
